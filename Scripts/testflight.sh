@@ -34,7 +34,7 @@ EXPORT_DIR="$BUILD_DIR/export"
 
 # Build number must rise with every upload; the date makes that automatic and
 # keeps it meaningful when reading a build list later.
-BUILD_NUMBER="${BUILD_NUMBER:-$(date +%Y%m%d%H%M)}"
+BUILD_NUMBER="${BUILD_NUMBER:-$(date -u +%Y%m%d.%H%M)}"
 
 echo "==> Archiving (build $BUILD_NUMBER)"
 xcodebuild archive \

@@ -143,6 +143,13 @@ struct AboutView: View {
     private var version: String {
         let short = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "1.0"
         let build = Bundle.main.infoDictionary?["CFBundleVersion"] as? String ?? "1"
+        // The build is a timestamp: 20260906.2020 is 6 Sep 2026, 20:20 UTC.
+        // Rendered as a date so it reads as one.
+        let stamp = build.split(separator: ".")
+        if stamp.count == 2, stamp[0].count == 8 {
+            let d = stamp[0], t = stamp[1]
+            return "\(short) (\(d.prefix(4))-\(d.dropFirst(4).prefix(2))-\(d.suffix(2)) \(t.prefix(2)):\(t.suffix(2)))"
+        }
         return "\(short) (build \(build))"
     }
 

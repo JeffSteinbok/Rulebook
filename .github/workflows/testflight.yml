@@ -71,7 +71,7 @@ jobs:
       - name: Set unique build number
         id: build
         run: |
-          build_number="$(date -u +%Y%m%d%H%M)"
+          build_number="$(date -u +%Y%m%d.%H%M)"
           echo "number=$build_number" >> "$GITHUB_OUTPUT"
 
       - name: Archive app
