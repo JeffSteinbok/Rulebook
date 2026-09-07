@@ -94,6 +94,14 @@ final class RulesListViewModel {
     ///
     /// Returns true when the caller may proceed. When it returns false it has
     /// already raised the paywall, so callers just return.
+    /// True when writes are gated. Drives the lock hints on paid controls, so
+    /// the paywall confirms something the user already expected rather than
+    /// being the first they hear of it.
+    var isLocked: Bool {
+        guard let pro else { return false }
+        return !pro.isPro
+    }
+
     @discardableResult
     func requirePro(_ trigger: PaywallTrigger) -> Bool {
         guard let pro else { return true }

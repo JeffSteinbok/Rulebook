@@ -239,7 +239,7 @@ struct RulesListView: View {
     @ToolbarContentBuilder
     private var toolbar: some ToolbarContent {
         ToolbarItem(placement: .topBarTrailing) {
-            Button(model.mode == .normal ? "Reorder" : "Done") {
+            Button {
                 // Asked on the way in. Letting someone drag a row and only then
                 // refusing the write is the trick this app shouldn't play.
                 if model.mode == .normal {
@@ -247,6 +247,18 @@ struct RulesListView: View {
                 }
                 model.mode = model.mode == .normal ? .reorder : .normal
                 model.selection = []
+            } label: {
+                if model.mode == .normal && model.isLocked {
+                    // Explicit HStack, not Label: a toolbar imposes its own
+                    // label style and renders icon-only, which drops the word
+                    // and leaves an unexplained padlock.
+                    HStack(spacing: 4) {
+                        Text("Reorder")
+                        Image(systemName: "lock.fill")
+                    }
+                } else {
+                    Text(model.mode == .normal ? "Reorder" : "Done")
+                }
             }
             .font(DS.Font.secondary)
         }
@@ -301,7 +313,7 @@ struct RulesListView: View {
             // The empty state has its own calls to action; a second one below
             // would compete with them.
             if !model.hasNoRulesAtAll {
-                PrimaryButton(title: "New rule", trailing: "plus") {
+                PrimaryButton(title: "New rule", trailing: model.isLocked ? "lock.fill" : "plus") {
                     guard model.requirePro(.editing) else { return }
                     seedPreset = nil
                     isCreating = true

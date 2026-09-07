@@ -45,9 +45,18 @@ struct RuleDetailView: View {
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
-                Button("Edit") {
+                Button {
                     guard model.requirePro(.editing) else { return }
                     isEditing = true
+                } label: {
+                    if model.isLocked {
+                        HStack(spacing: 4) {
+                            Text("Edit")
+                            Image(systemName: "lock.fill")
+                        }
+                    } else {
+                        Text("Edit")
+                    }
                 }
                     .font(DS.Font.secondary)
                     .disabled(isReadOnly)
