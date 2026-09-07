@@ -1,0 +1,5 @@
+First release.
+
+Rulebook manages the server-side mail rules on your Microsoft 365 or
+Outlook.com account: read them in plain language, toggle them, reorder them,
+edit them, and find the ones that stopped working without telling you.

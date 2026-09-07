@@ -13,3 +13,15 @@ xcuserdata/
 # Never commit a cached token
 .rulebook/
 token.json
+
+# App Store Connect API key config: names the path to the .p8. Regenerate
+# with Scripts/asc-key.sh; never commit it.
+fastlane/asc_api_key.json
+fastlane/Preview.html
+fastlane/report.xml
+
+# App Review demo account. This repo is public; the password must never be in
+# it. deliver reads these from the working tree, so keeping them untracked
+# costs nothing — regenerate on a fresh clone before uploading a listing.
+fastlane/metadata/review_information/demo_user.txt
+fastlane/metadata/review_information/demo_password.txt

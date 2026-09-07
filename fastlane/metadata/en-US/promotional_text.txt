@@ -1,0 +1,2 @@
+Now catches rules Outlook reports as healthy but that quietly stopped working —
+like a rule filing into a folder you deleted months ago.

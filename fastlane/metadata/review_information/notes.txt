@@ -1,0 +1,18 @@
+Rulebook manages the server-side mail rules on a Microsoft 365 or Outlook.com
+mailbox. It needs a signed-in Microsoft account to show anything, so demo
+credentials are supplied in the fields above.
+
+Sign-in is presented by Microsoft (MSAL), not by Rulebook. After signing in,
+the rules list is the first screen; tap any rule for its detail, and Edit to
+open the editor.
+
+Microsoft Graph scopes requested, and why:
+ - MailboxSettings.ReadWrite  — read and write the mail rules themselves
+ - MailboxFolder.Read         — resolve the folder names rules file into
+ - Mail.ReadBasic             — required by Graph to list mail folders;
+                                the app reads no message data
+ - offline_access             — stay signed in between launches
+
+The app never requests permission to read message bodies. The privacy policy
+at https://rulebook.steinbok.net/privacy.html discloses that the folder-listing
+permission is broader than the app's use of it.
