@@ -30,7 +30,11 @@ targets:
       properties:
         CFBundleDisplayName: Rulebook
         CFBundleShortVersionString: "1.0"
-        CFBundleVersion: "1"
+        # Resolved at build time from CURRENT_PROJECT_VERSION. A literal here
+        # silently overrides whatever the build passes, which shipped build 1
+        # and would have had every later upload rejected: App Store Connect
+        # requires the build number to strictly increase.
+        CFBundleVersion: $(CURRENT_PROJECT_VERSION)
         # Declared here so App Store Connect has it at upload time. Without it,
         # every TestFlight build stops to ask about export compliance; setting
         # it afterwards through the API returns 409 because the value is

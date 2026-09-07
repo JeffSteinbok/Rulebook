@@ -21,6 +21,9 @@ ASC_ISSUER_ID="${ASC_ISSUER_ID:-517f64b1-e6f9-4185-be4e-ef0faa859ae1}"
 ASC_KEY_PATH="${ASC_KEY_PATH:-$HOME/Downloads/TestFlight-GitHub-Actions-Backup/AuthKey_${ASC_KEY_ID}.p8}"
 
 PROFILE_NAME="${PROFILE_NAME:-Rulebook App Store}"
+# Overridable: while more than one "Apple Distribution" certificate is in the
+# keychain the name alone is ambiguous and the archive may pick the wrong one.
+SIGN_IDENTITY="${SIGN_IDENTITY:-Apple Distribution}"
 
 DRY_RUN=false
 [[ "${1:-}" == "--dry-run" ]] && DRY_RUN=true
@@ -42,7 +45,9 @@ xcodebuild archive \
   -archivePath "$ARCHIVE" \
   CURRENT_PROJECT_VERSION="$BUILD_NUMBER" \
   DEVELOPMENT_TEAM="$TEAM_ID" \
-  CODE_SIGN_STYLE=Automatic \
+  CODE_SIGN_STYLE=Manual \
+  CODE_SIGN_IDENTITY="$SIGN_IDENTITY" \
+  PROVISIONING_PROFILE_SPECIFIER="$PROFILE_NAME" \
   -allowProvisioningUpdates \
   -authenticationKeyPath "$ASC_KEY_PATH" \
   -authenticationKeyID "$ASC_KEY_ID" \
