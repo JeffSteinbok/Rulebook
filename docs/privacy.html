@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rulebook — Privacy</title>
+<meta name="description" content="What Rulebook reads, what it never reads, and where it goes. No account, no analytics, no server.">
+<meta property="og:title" content="Rulebook — Privacy">
+<meta property="og:url" content="https://rulebook.steinbok.net/privacy.html">
+<link rel="icon" type="image/png" href="icon.png">
+<link rel="apple-touch-icon" href="icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;600;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a class="wordmark" href="./">RULEBOOK</a>
+    <div class="nav-links">
+      <a href="./">Home</a>
+      <a href="./support.html">Support</a>
+      <a href="https://github.com/JeffSteinbok/Rulebook">GitHub</a>
+    </div>
+  </div>
+</nav>
+
+<div class="container hero">
+  <h1>Privacy</h1>
+  <div class="rule"></div>
+  <p class="lede">
+    Rulebook has no account, no server, and no analytics. It is a client for a
+    mailbox you already own, and it talks only to your mail provider.
+  </p>
+</div>
+
+<section class="container">
+  <h2>The short version</h2>
+  <ul>
+    <li>No data is collected by the developer. There is nowhere for it to go — Rulebook has no backend.</li>
+    <li>No analytics, no tracking, no advertising identifier, no third-party SDKs of that kind.</li>
+    <li>Your rules live in your mailbox. The app edits them in place; it does not keep a copy anywhere else.</li>
+    <li>Rulebook does not read your mail.</li>
+  </ul>
+</section>
+
+<section class="container">
+  <h2>What the app reads</h2>
+  <p>Signed in to a Microsoft 365 or Outlook.com account, Rulebook reads and writes:</p>
+  <ul>
+    <li><strong>Your mail rules</strong> — names, conditions, actions, order, and whether each is enabled. This is the entire point of the app.</li>
+    <li><strong>Your folder names</strong> — so a rule can say “Move to Finance/Invoices” instead of an opaque identifier.</li>
+    <li><strong>Your account name and address</strong> — shown so you can tell which mailbox you're looking at.</li>
+  </ul>
+
+  <h3>A permission that is broader than the app's use of it</h3>
+  <p>
+    Listing your folders through Microsoft Graph requires a permission that also
+    grants access to message senders, recipients and subjects. Rulebook does not
+    read them, and there is no code in the app that does — but the grant you see
+    on the Microsoft consent screen is wider than what the app actually uses, and
+    you should know that before approving it rather than discover it afterwards.
+    The source is public if you want to check.
+  </p>
+  <p>
+    Message <em>bodies</em> are never requested at all. Rulebook does not ask for
+    the permission that would allow it.
+  </p>
+</section>
+
+<section class="container">
+  <h2>Where things are stored</h2>
+  <p>
+    Sign-in tokens are held in the iOS Keychain on your device, managed by
+    Microsoft's authentication library. They are not transmitted to the developer,
+    because there is no developer-controlled server to transmit them to.
+  </p>
+  <p>
+    Rules are cached on the device so the list can be shown before the network
+    responds. Deleting the app removes the cache and the tokens together.
+  </p>
+</section>
+
+<section class="container">
+  <h2>Who your data is shared with</h2>
+  <p>
+    Nobody. Rulebook makes network requests to Microsoft, on your behalf, using
+    your own credentials. That traffic is governed by Microsoft's privacy terms
+    and — for a work or school account — by your organisation's policies, both of
+    which apply exactly as they already do to your mailbox.
+  </p>
+  <p>There are no other network destinations.</p>
+</section>
+
+<section class="container">
+  <h2>Children</h2>
+  <p>
+    Rulebook is not directed at children. It requires an existing mail account to
+    do anything at all.
+  </p>
+</section>
+
+<section class="container">
+  <h2>Removing access</h2>
+  <p>
+    Sign out from <strong>Manage accounts</strong> in the app, which deletes the
+    token from your phone. To revoke the grant itself, use
+    <a href="https://account.live.com/consent/Manage">account.live.com/consent/Manage</a>
+    for a personal Microsoft account, or
+    <a href="https://myapps.microsoft.com">myapps.microsoft.com</a> for a work or
+    school account.
+  </p>
+</section>
+
+<section class="container">
+  <h2>Changes, and how to ask</h2>
+  <p>
+    If this policy changes, the updated version appears on this page and the date
+    below changes with it. Questions are welcome as a
+    <a href="https://github.com/JeffSteinbok/Rulebook/issues">GitHub issue</a>, or
+    by email to <a href="mailto:jeff@steinbok.net">jeff@steinbok.net</a>.
+  </p>
+  <div class="note">
+    <p>Last updated 7 September 2026.</p>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <p>Made with ♥ by <a href="https://github.com/JeffSteinbok">Jeff Steinbok</a> ·
+       <a href="./">Home</a> ·
+       <a href="./support.html">Support</a> ·
+       <a href="https://github.com/JeffSteinbok/Rulebook">Source</a></p>
+  </div>
+</footer>
+
+</body>
+</html>
