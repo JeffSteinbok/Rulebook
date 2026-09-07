@@ -11,12 +11,34 @@ APP_IDENTIFIER = "net.steinbok.Rulebook".freeze
 # a repo-root-relative path does not resolve here.
 KEY_JSON = File.expand_path("asc_api_key.json", __dir__).freeze
 
+# demo_user.txt and demo_password.txt are gitignored — this repo is public and
+# the password cannot live in it. That means a fresh clone has neither, and
+# deliver would happily upload a listing with no demo account: App Review then
+# cannot sign in, and the rejection arrives days later. Fail here instead.
+def require_demo_account!
+  dir = File.expand_path("metadata/review_information", __dir__)
+  missing = ["demo_user.txt", "demo_password.txt"].reject do |f|
+    path = File.join(dir, f)
+    File.exist?(path) && !File.read(path).strip.empty?
+  end
+  return if missing.empty?
+
+  UI.user_error!(
+    "Missing App Review demo credentials: #{missing.join(', ')}.\n" \
+    "These are gitignored, so a fresh clone will not have them. Write the " \
+    "demo account into fastlane/metadata/review_information/ before uploading " \
+    "a listing — App Review cannot sign in without it."
+  )
+end
+
 platform :ios do
   desc "Push metadata, screenshots, age rating and privacy labels to App Store Connect"
   lane :listing do
     unless File.exist?(KEY_JSON)
       UI.user_error!("#{KEY_JSON} is missing — run ./Scripts/asc-key.sh first.")
     end
+
+    require_demo_account!
 
     key = JSON.parse(File.read(KEY_JSON))
 
@@ -44,6 +66,9 @@ platform :ios do
 
   desc "Verify auth and show what would be pushed, without writing anything"
   lane :listing_check do
+    require_demo_account!
+    UI.success("Demo account credentials present")
+
     key = JSON.parse(File.read(KEY_JSON))
     app_store_connect_api_key(
       key_id: key["key_id"],
