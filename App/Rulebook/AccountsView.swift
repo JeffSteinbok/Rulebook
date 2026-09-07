@@ -172,8 +172,8 @@ struct AboutView: View {
                     .listRowBackground(DS.Palette.ground)
                     .listRowInsets(.init(top: 0, leading: DS.Metric.gutter, bottom: 0, trailing: DS.Metric.gutter))
 
-                Link(destination: URL(string: "https://jeffsteinbok.github.io/Rulebook/support.html")!) {
-                    DetailRow(key: "Support", value: "jeffsteinbok.github.io/Rulebook")
+                Link(destination: URL(string: "https://rulebook.steinbok.net/support.html")!) {
+                    DetailRow(key: "Support", value: "rulebook.steinbok.net")
                 }
                 .listRowBackground(DS.Palette.ground)
                 .listRowInsets(.init(top: 0, leading: DS.Metric.gutter, bottom: 0, trailing: DS.Metric.gutter))
