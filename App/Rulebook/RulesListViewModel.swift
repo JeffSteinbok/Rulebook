@@ -52,6 +52,15 @@ final class RulesListViewModel {
     var filter: Filter = .all
     var issuesOnly = false
     var mode: Mode = .normal
+
+    /// The entitlement. `nil` means unrestricted — the CLI harness and the
+    /// tests construct the view model without one, and neither sells anything.
+    var pro: ProStore?
+
+    /// Set by ``requirePro(_:)`` when a write is refused; the list view watches
+    /// it and presents the sheet. Keeping it here rather than in each view is
+    /// what makes the gate one list instead of scattered checks.
+    var paywall: PaywallTrigger?
     var selection: Set<String> = []
 
     let profile: ProviderProfile
@@ -75,6 +84,22 @@ final class RulesListViewModel {
         self.store = store
         self.folders = folders
         self.profile = profile
+    }
+
+    // MARK: - Entitlement
+
+    /// Reading is free; writing is not. Every path that mutates the mailbox
+    /// calls this first, so the set of paid actions is this file's guard
+    /// statements and nothing else.
+    ///
+    /// Returns true when the caller may proceed. When it returns false it has
+    /// already raised the paywall, so callers just return.
+    @discardableResult
+    func requirePro(_ trigger: PaywallTrigger) -> Bool {
+        guard let pro else { return true }
+        guard !pro.isPro else { return true }
+        paywall = trigger
+        return false
     }
 
     // MARK: - Derived
@@ -172,6 +197,7 @@ final class RulesListViewModel {
     // MARK: - Mutation
 
     func setEnabled(_ isEnabled: Bool, on rule: MailRule) async {
+        guard requirePro(.toggle) else { return }
         guard let id = rule.id, !rule.status.isReadOnly else { return }
         var patch = rule
         patch.isEnabled = isEnabled
@@ -181,6 +207,7 @@ final class RulesListViewModel {
     /// Deletes are the one write that is NOT kept locally on failure: a rule
     /// that looks gone but is still filing mail is the worst lie to tell.
     func delete(_ rule: MailRule) async {
+        guard requirePro(.delete) else { return }
         guard let id = rule.id, !rule.status.isReadOnly else { return }
         let previous = rules
         rules.removeAll { $0.id == id }
@@ -195,6 +222,7 @@ final class RulesListViewModel {
     }
 
     func duplicate(_ rule: MailRule) async -> MailRule? {
+        guard requirePro(.duplicate) else { return nil }
         var copy = rule.writablePayload()   // clears id and provider-owned status
         copy.name = "\(rule.name) (copy)"
         copy.isEnabled = false
@@ -213,6 +241,7 @@ final class RulesListViewModel {
     /// Read-only rules are skipped rather than failing the batch — the user
     /// selected a range, they didn't single out an admin rule.
     func applyToSelection(enabled: Bool) async {
+        guard requirePro(.bulk) else { return }
         for rule in selectedWritableRules {
             await setEnabled(enabled, on: rule)
         }
@@ -220,6 +249,7 @@ final class RulesListViewModel {
     }
 
     func deleteSelection() async {
+        guard requirePro(.bulk) else { return }
         for rule in selectedWritableRules {
             await delete(rule)
         }
@@ -255,6 +285,7 @@ final class RulesListViewModel {
     // — see "Gaps" in the spec.
 
     func move(from source: IndexSet, to destination: Int) async {
+        guard requirePro(.reorder) else { return }
         let previous = rules
         rules.move(fromOffsets: source, toOffset: destination)
 
@@ -283,6 +314,7 @@ final class RulesListViewModel {
 
     /// The fix for a "never runs" warning: hoist the rule above its blocker.
     func hoist(_ rule: MailRule) async {
+        guard requirePro(.reorder) else { return }
         guard let index = rules.firstIndex(where: { $0.id == rule.id }), index > 0 else { return }
         await move(from: IndexSet(integer: index), to: 0)
     }

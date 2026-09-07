@@ -7,10 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		24E1DC2B663B26DCEADA08AE /* Pro.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F351CF7D02AB0537ADBB689 /* Pro.swift */; };
 		30A90C395839A52FA869E359 /* RuleBookApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D13E754716B70A913307162C /* RuleBookApp.swift */; };
 		36E13F777F772DD299E64A25 /* MSALTokenProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = D32210122649D35CB55AB2A6 /* MSALTokenProvider.swift */; };
 		38122D86E7D5516B34689AFF /* AccountStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75EBFFCBB1851E430C038584 /* AccountStore.swift */; };
 		5308BB620CA607295E52C72B /* PreviewSeed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2CA180A07CFA6F9A35D88299 /* PreviewSeed.swift */; };
+		597CF2A540D1DB18401FDE58 /* PaywallView.swift in Sources */ = {isa = PBXBuildFile; fileRef = E57B5E4CBFD00D987245C967 /* PaywallView.swift */; };
 		6637068E2CCA89FBD6C41A25 /* RulesListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = DD4E1FE31C250BA2778D37DF /* RulesListViewModel.swift */; };
 		792874D7A39F0035F46032FB /* RulebookKit in Frameworks */ = {isa = PBXBuildFile; productRef = 4E10F50DC172D15F31C7DD43 /* RulebookKit */; };
 		7AC53E14155FCC094E5E5863 /* RuleEditorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1F60C0A8E75EE9242771716 /* RuleEditorView.swift */; };
@@ -36,6 +38,7 @@
 		2CA180A07CFA6F9A35D88299 /* PreviewSeed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewSeed.swift; sourceTree = "<group>"; };
 		33C9364D788CDBD25D78BEDF /* ConditionEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConditionEditor.swift; sourceTree = "<group>"; };
 		5C81C42C5360070006BEED62 /* RuleDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RuleDetailView.swift; sourceTree = "<group>"; };
+		5F351CF7D02AB0537ADBB689 /* Pro.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pro.swift; sourceTree = "<group>"; };
 		65D063BB8D7341C7338CD1AD /* AddAccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddAccountView.swift; sourceTree = "<group>"; };
 		75EBFFCBB1851E430C038584 /* AccountStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountStore.swift; sourceTree = "<group>"; };
 		930B7A542CD59DD89DC4CA12 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
@@ -47,6 +50,7 @@
 		D32210122649D35CB55AB2A6 /* MSALTokenProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MSALTokenProvider.swift; sourceTree = "<group>"; };
 		DD4E1FE31C250BA2778D37DF /* RulesListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RulesListViewModel.swift; sourceTree = "<group>"; };
 		DF51557542604AA48BF04DCD /* Rulebook.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = Rulebook.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		E57B5E4CBFD00D987245C967 /* PaywallView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaywallView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -74,7 +78,9 @@
 				15BC9E3FF4B49208354D0359 /* EmptyStates.swift */,
 				930B7A542CD59DD89DC4CA12 /* Info.plist */,
 				D32210122649D35CB55AB2A6 /* MSALTokenProvider.swift */,
+				E57B5E4CBFD00D987245C967 /* PaywallView.swift */,
 				2CA180A07CFA6F9A35D88299 /* PreviewSeed.swift */,
+				5F351CF7D02AB0537ADBB689 /* Pro.swift */,
 				D13E754716B70A913307162C /* RuleBookApp.swift */,
 				5C81C42C5360070006BEED62 /* RuleDetailView.swift */,
 				97D94761282964ED07949781 /* RuleDiagnostics.swift */,
@@ -195,7 +201,9 @@
 				A26A831271B0377830F17835 /* DesignTokens.swift in Sources */,
 				B031FBEA1ABA14A19AF230DA /* EmptyStates.swift in Sources */,
 				36E13F777F772DD299E64A25 /* MSALTokenProvider.swift in Sources */,
+				597CF2A540D1DB18401FDE58 /* PaywallView.swift in Sources */,
 				5308BB620CA607295E52C72B /* PreviewSeed.swift in Sources */,
+				24E1DC2B663B26DCEADA08AE /* Pro.swift in Sources */,
 				30A90C395839A52FA869E359 /* RuleBookApp.swift in Sources */,
 				E049EE3E14953624AD28E21A /* RuleDetailView.swift in Sources */,
 				808DCAF6FF8A56864ACFCA0E /* RuleDiagnostics.swift in Sources */,

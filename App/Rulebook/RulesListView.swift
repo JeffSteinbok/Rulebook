@@ -35,6 +35,14 @@ struct RulesListView: View {
                 .sheet(isPresented: $isCreating) {
                     RuleEditorView(list: model, preset: seedPreset)
                 }
+                .sheet(item: Binding(
+                    get: { model.paywall },
+                    set: { model.paywall = $0 }
+                )) { trigger in
+                    if let pro = model.pro {
+                        PaywallView(trigger: trigger, pro: pro)
+                    }
+                }
                 .sheet(isPresented: $isAddingAccount) {
                     if let tokens, let accounts {
                         AddAccountView(tokens: tokens, accounts: accounts)
@@ -126,6 +134,7 @@ struct RulesListView: View {
 
                 if model.hasNoRulesAtAll {
                     EmptyRulesView(profile: model.profile) { preset in
+                        guard model.requirePro(.editing) else { return }
                         seedPreset = preset
                         isCreating = true
                     }
@@ -231,6 +240,11 @@ struct RulesListView: View {
     private var toolbar: some ToolbarContent {
         ToolbarItem(placement: .topBarTrailing) {
             Button(model.mode == .normal ? "Reorder" : "Done") {
+                // Asked on the way in. Letting someone drag a row and only then
+                // refusing the write is the trick this app shouldn't play.
+                if model.mode == .normal {
+                    guard model.requirePro(.reorder) else { return }
+                }
                 model.mode = model.mode == .normal ? .reorder : .normal
                 model.selection = []
             }
@@ -288,6 +302,7 @@ struct RulesListView: View {
             // would compete with them.
             if !model.hasNoRulesAtAll {
                 PrimaryButton(title: "New rule", trailing: "plus") {
+                    guard model.requirePro(.editing) else { return }
                     seedPreset = nil
                     isCreating = true
                 }
