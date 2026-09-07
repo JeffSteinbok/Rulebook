@@ -1,0 +1,45 @@
+# Rulebook — App Store listing, as files.
+#
+# This manages the *listing only*. Scripts/testflight.sh owns building and
+# uploading the binary, and there's no reason to have two things that do that.
+
+app_identifier "net.steinbok.Rulebook"
+team_id "Y7KVX7666P"
+
+# Auth lives in the Fastfile lane, which reads the same JSON and also
+# authenticates the privacy-details upload. Run `fastlane listing`, not a
+# bare `fastlane deliver` — the latter has no credentials.
+
+# testflight.sh uploads builds; deliver must not try.
+skip_binary_upload true
+
+# Screenshots are the point of using this, so always replace what's there.
+overwrite_screenshots true
+skip_screenshots false
+skip_metadata false
+
+# Show the HTML preview and require a typed confirmation before anything is
+# written to App Store Connect. Set force:true only in CI, never by hand.
+force false
+
+# Submitting for review stays a deliberate, separate act.
+submit_for_review false
+automatic_release false
+
+precheck_include_in_app_purchases false
+
+# The age-rating questionnaire, answered as a file. Every content category
+# is NONE and every behaviour flag false, which is 4+ — the same rating
+# Microsoft Outlook carries, with no advisories.
+app_rating_config_path "fastlane/metadata/app_rating_config.json"
+
+# Price is deliberately NOT set here. US$2.99, set in App Store Connect.
+#
+# deliver's price_tier is the legacy tier system; Apple's current model is 900
+# price points with per-territory control, and the old option maps onto it
+# badly enough to be worth avoiding. Pricing is set once; this file is re-run
+# every release, and a stale tier silently repricing the app is a bad trade for
+# saving one click.
+#
+# Paid apps also need the Paid Applications Agreement accepted with banking and
+# tax details complete, which no API can do for you.

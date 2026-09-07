@@ -1,0 +1,51 @@
+Your mail rules run on the server, filing, forwarding, and flagging messages
+before you ever see them. On the desktop you can manage them. On your phone,
+until now, you couldn't.
+
+Rulebook puts your Microsoft 365 and Outlook.com rules on your iPhone — the
+real, server-side rules, not a copy that only works while an app is running.
+Edit one here and it takes effect for every device you read mail on.
+
+WHAT IT'S FOR
+
+• See every rule in plain language. "Any of 2 conditions → Move to 'Company'"
+  reads the way you'd explain it out loud, so you can tell what a rule does
+  without opening it.
+• Turn a rule off for a week. Toggle from the list, no dialogs.
+• Fix the rules that broke silently. Delete a folder and the rule that files
+  into it keeps reporting as healthy while the mail just stays in your inbox.
+  Rulebook flags that, tells you why it matters, and offers to pick a new
+  folder.
+• Reorder with a drag. Rules run in order, and a rule that stops processing
+  hides everything under it — so order is the whole game.
+• Search across names, senders, and folders.
+• Build rules that actually work. The editor only offers what Outlook can
+  really do, and explains the awkward parts instead of letting you save
+  something that silently fails.
+
+BUILT FOR THE MAILBOX YOU HAVE
+
+Rules are read from and written to your mailbox through Microsoft Graph. There
+is no Rulebook account, no Rulebook server, and no copy of your rules anywhere
+but your mailbox and your phone. Sign in with Microsoft, and your organization's
+existing security policies apply unchanged.
+
+Rules your administrator manages are shown, clearly marked, and left read-only —
+Rulebook won't let you break something you can't fix.
+
+PRIVACY
+
+Rulebook reads and writes your rules, and reads your folder names and account
+name. It does not read your mail. Listing folders does require a Microsoft
+permission that is broader than the app's use of it, and the privacy policy
+says so plainly rather than leaving you to find out at the consent screen.
+Message bodies are never requested at all. There is no analytics SDK, no
+tracking, and no advertising.
+
+WHAT'S NEXT
+
+Gmail support is in progress. Rulebook's rule model was built provider-neutral
+from the first commit for exactly this reason.
+
+Requires a Microsoft 365, Office 365, or Outlook.com account. Not affiliated
+with Microsoft.
