@@ -63,10 +63,15 @@ jobs:
       - name: Run tests
         run: swift test
 
+      # YYYYMMDDHHmm, matching Scripts/testflight.sh. Build numbers must
+      # strictly increase and can never be lowered, so every source of builds
+      # has to share one scheme: a run counter works on a runner but a laptop
+      # cannot know GITHUB_RUN_NUMBER, and one local upload would then put the
+      # number permanently out of reach of the workflow.
       - name: Set unique build number
         id: build
         run: |
-          build_number="$((1000 + GITHUB_RUN_NUMBER)).${GITHUB_RUN_ATTEMPT}"
+          build_number="$(date -u +%Y%m%d%H%M)"
           echo "number=$build_number" >> "$GITHUB_OUTPUT"
 
       - name: Archive app
