@@ -45,7 +45,19 @@ struct RuleDetailView: View {
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
-                Button("Edit") { isEditing = true }
+                Button {
+                    guard model.requirePro(.editing) else { return }
+                    isEditing = true
+                } label: {
+                    if model.isLocked {
+                        HStack(spacing: 4) {
+                            Text("Edit")
+                            Image(systemName: "lock.fill")
+                        }
+                    } else {
+                        Text("Edit")
+                    }
+                }
                     .font(DS.Font.secondary)
                     .disabled(isReadOnly)
             }
@@ -181,6 +193,9 @@ struct RuleDetailView: View {
             // reorder isn't an optional nicety.
             await model.hoist(rule)
         case .missingFolder:
+            // The fix is an edit, so it needs Pro like any other. Finding the
+            // broken rule stays free — that is the part worth having first.
+            guard model.requirePro(.editing) else { return }
             isEditing = true
         case .serverError:
             // Re-PATCHing unchanged content is what clears hasError.

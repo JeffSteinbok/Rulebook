@@ -33,13 +33,14 @@ precheck_include_in_app_purchases false
 # Microsoft Outlook carries, with no advisories.
 app_rating_config_path "fastlane/metadata/app_rating_config.json"
 
-# Price is deliberately NOT set here. US$2.99, set in App Store Connect.
+# Price is deliberately NOT set here. The app is Free; the US$2.99 lives in the
+# in-app purchase net.steinbok.Rulebook.pro, which unlocks writing. Reading is
+# the free tier and stays that way.
 #
-# deliver's price_tier is the legacy tier system; Apple's current model is 900
-# price points with per-territory control, and the old option maps onto it
-# badly enough to be worth avoiding. Pricing is set once; this file is re-run
+# deliver's price_tier is the legacy tier system and does not manage in-app
+# purchases at all. Both are set in App Store Connect, once. This file runs
 # every release, and a stale tier silently repricing the app is a bad trade for
-# saving one click.
+# saving a click.
 #
-# Paid apps also need the Paid Applications Agreement accepted with banking and
-# tax details complete, which no API can do for you.
+# Paid in-app purchases still need the Paid Applications Agreement accepted with
+# banking and tax details complete, which no API can do for you.

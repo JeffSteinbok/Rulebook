@@ -1,0 +1,32 @@
+{
+  "identifier" : "A1B2C3D4",
+  "nonRenewingSubscriptions" : [],
+  "products" : [
+    {
+      "displayPrice" : "2.99",
+      "familyShareable" : false,
+      "internalID" : "RULEBOOK_PRO",
+      "localizations" : [
+        {
+          "description" : "Edit, create, delete, reorder, and enable or disable your mail rules. Reading them is always free.",
+          "displayName" : "Rulebook Pro",
+          "locale" : "en_US"
+        }
+      ],
+      "productID" : "net.steinbok.Rulebook.pro",
+      "referenceName" : "Rulebook Pro",
+      "type" : "NonConsumable"
+    }
+  ],
+  "settings" : {
+    "_failTransactionsEnabled" : false,
+    "_locale" : "en_US",
+    "_storefront" : "USA",
+    "_storeKitErrors" : []
+  },
+  "subscriptionGroups" : [],
+  "version" : {
+    "major" : 3,
+    "minor" : 0
+  }
+}

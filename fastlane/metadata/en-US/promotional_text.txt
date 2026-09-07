@@ -1,2 +1,2 @@
-Now catches rules Outlook reports as healthy but that quietly stopped working —
-like a rule filing into a folder you deleted months ago.
+See every mail rule on your Microsoft 365 account — including the ones that
+quietly stopped working — for free. Editing them is a one-time unlock.

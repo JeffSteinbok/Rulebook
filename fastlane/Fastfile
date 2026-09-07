@@ -51,13 +51,14 @@ platform :ios do
       in_house: false
     )
 
-    # Declares "Data Not Collected". True today because the app has no backend;
-    # revisit the moment anything resembling analytics is added.
-    upload_app_privacy_details_to_app_store(
-      app_identifier: APP_IDENTIFIER,
-      json_path: File.expand_path("app_data_usages.json", __dir__),
-      skip_json_file_saving: true
-    )
+    # The App Privacy labels are NOT set here. Despite taking no api_key of its
+    # own, upload_app_privacy_details_to_app_store does not fall back to the
+    # Spaceship token — it demands `username` and the legacy Apple ID login,
+    # which means an interactive 2FA prompt. An API key cannot drive it.
+    #
+    # So the "Data Not Collected" declaration is set by hand in App Store
+    # Connect under App Privacy. It changes about never; the screenshots and
+    # copy that change every release are what this lane is for.
 
     # Reads the Deliverfile. Shows an HTML preview and waits for confirmation;
     # never submits for review on its own.

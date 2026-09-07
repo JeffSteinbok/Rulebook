@@ -4,6 +4,7 @@ import RulebookKit
 @main
 struct RulebookApp: App {
     @State private var accounts = AccountStore()
+    @State private var pro = ProStore()
     @State private var tokens: MSALTokenProvider?
     @State private var bootError: String?
 
@@ -24,11 +25,18 @@ struct RulebookApp: App {
         WindowGroup {
             Group {
                 if isDemo {
-                    RulesListView(model: RulesListViewModel(
-                        store: PreviewSeed.store(),
-                        folders: PreviewSeed.folders,
-                        profile: ProviderCatalog.outlook
-                    ))
+                    RulesListView(model: {
+                        let model = RulesListViewModel(
+                            store: PreviewSeed.store(),
+                            folders: PreviewSeed.folders,
+                            profile: ProviderCatalog.outlook
+                        )
+                        // `-locked` exercises the free tier: same seed, entitlement
+                        // enforced. Screenshots use plain `-demo`, which is unlocked.
+                        let locked = ProcessInfo.processInfo.arguments.contains("-locked")
+                        model.pro = ProStore(alwaysUnlocked: !locked)
+                        return model
+                    }())
                 } else if let tokens {
                     // A connected mailbox means onboarding has nothing to do —
                     // launch straight into the rules.
@@ -44,6 +52,8 @@ struct RulebookApp: App {
                 }
             }
             .tint(DS.Palette.accent)
+            .environment(pro)
+            .task { await pro.start() }
         }
     }
 
@@ -62,6 +72,8 @@ struct RootView: View {
     let tokens: MSALTokenProvider
     let accounts: AccountStore
 
+    @Environment(ProStore.self) private var pro
+
     @State private var model: RulesListViewModel?
 
     var body: some View {
@@ -78,11 +90,13 @@ struct RootView: View {
     private func rebuild() {
         // Both stores are `any RuleStore`, so this is the only line that knows
         // the app talks to Graph at all.
-        model = RulesListViewModel(
+        let built = RulesListViewModel(
             store: GraphRuleStore(tokenProvider: tokens),
             folders: GraphMailFolderDirectory(tokenProvider: tokens),
             profile: ProviderCatalog.outlook
         )
+        built.pro = pro
+        model = built
     }
 }
 
