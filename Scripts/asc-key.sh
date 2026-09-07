@@ -4,6 +4,11 @@
 #
 # The output names the .p8 by path rather than embedding it, so the private
 # key never lands in the repo. The JSON is gitignored regardless.
+#
+# Note this is NOT the shape `deliver --api_key_path` wants: that one parses
+# the JSON itself and demands the PEM inline under a `key` field. The Fastfile
+# reads this file and passes key_filepath through, which takes a path. Hence
+# `fastlane listing` rather than a bare deliver invocation.
 set -euo pipefail
 
 ASC_KEY_ID="${ASC_KEY_ID:-9L496DA23R}"
