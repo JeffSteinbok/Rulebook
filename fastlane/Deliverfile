@@ -32,3 +32,14 @@ precheck_include_in_app_purchases false
 # is NONE and every behaviour flag false, which is 4+ — the same rating
 # Microsoft Outlook carries, with no advisories.
 app_rating_config_path "fastlane/metadata/app_rating_config.json"
+
+# Price is deliberately NOT set here. US$2.99, set in App Store Connect.
+#
+# deliver's price_tier is the legacy tier system; Apple's current model is 900
+# price points with per-territory control, and the old option maps onto it
+# badly enough to be worth avoiding. Pricing is set once; this file is re-run
+# every release, and a stale tier silently repricing the app is a bad trade for
+# saving one click.
+#
+# Paid apps also need the Paid Applications Agreement accepted with banking and
+# tax details complete, which no API can do for you.
