@@ -35,17 +35,20 @@ actor MSALTokenProvider: TokenProvider {
     /// `localizedDescription` says nothing. Its own logger is the only place
     /// the real reason appears, so it is wired up once, here.
     private static let logging: Void = {
-        // MSAL defaults to brokered auth — handing sign-in to the Microsoft
-        // Authenticator app — and refuses to fall back on its own:
+        // On a device, brokered auth is what you want: sign-in goes to the
+        // Microsoft Authenticator app, which is how most managed tenants expect
+        // it to work and gives SSO with other Microsoft apps.
+        //
+        // The simulator has no Authenticator, and MSAL will not fall back on
+        // its own — it fails before any browser opens:
         //   "Requiring default broker type due to app being built with iOS 13 SDK"
         //   Encountered error with code -51112
-        // There is no Authenticator on the simulator, so acquireToken failed
-        // before any browser opened, surfacing as MSALErrorInternal (-50000).
-        // The broker only buys SSO with other Microsoft apps, which this app
-        // already gave up when its token cache moved out of the shared keychain
-        // group. ASWebAuthenticationSession still runs Microsoft's own page, so
-        // the app never sees a password either way.
+        // surfacing as the useless MSALErrorInternal (-50000). So the broker is
+        // disabled there and only there. ASWebAuthenticationSession still runs
+        // Microsoft's own page either way, so the app never sees a password.
+        #if targetEnvironment(simulator)
         MSALGlobalConfig.brokerAvailability = .none
+        #endif
 
         MSALGlobalConfig.loggerConfig.logLevel = .verbose
         // Without this every description logs as "Masked(not-null)", which is
