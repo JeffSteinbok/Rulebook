@@ -4,9 +4,9 @@ import RulebookKit
 /// Add a mailbox: an explainer, then Microsoft's own sign-in, then a summary.
 ///
 /// Two app screens with a system-owned one between them. Microsoft handles the
-/// password, MFA, conditional access and the consent grant — this view never
-/// renders a credential field, and there is no provider step while Outlook is
-/// the only live option.
+/// password, MFA, conditional access and the consent grant — this view collects
+/// only the mailbox email address, and there is no provider step while Outlook
+/// is the only live option.
 struct AddAccountView: View {
     let tokens: MSALTokenProvider
     let accounts: AccountStore
