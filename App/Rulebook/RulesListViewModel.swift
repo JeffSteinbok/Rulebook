@@ -120,8 +120,12 @@ final class RulesListViewModel {
 
     var enabledCount: Int { rules.filter(\.isEnabled).count }
 
-    var errorCount: Int { issues.filter { $0.level == .error }.count }
-    var warningCount: Int { issues.count - errorCount }
+    private var primaryIssues: [RuleIssue] {
+        rules.compactMap(issue(for:))
+    }
+
+    var errorCount: Int { primaryIssues.filter { $0.level == .error }.count }
+    var warningCount: Int { primaryIssues.filter { $0.level == .warning }.count }
 
     /// The banner headline. Errors lead — a broken rule is losing mail now.
     var attentionTitle: String? {
