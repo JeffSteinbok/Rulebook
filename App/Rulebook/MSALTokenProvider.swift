@@ -17,13 +17,40 @@ actor MSALTokenProvider: TokenProvider {
         case noAccount
         case cancelled
         case interactionRequired
+        case offline
+        case failed(domain: String, code: Int)
 
         var errorDescription: String? {
             switch self {
             case .noAccount: "No mailbox is connected."
             case .cancelled: "Sign-in was cancelled."
             case .interactionRequired: "Please sign in again."
+            case .offline: "Rulebook couldn't reach Microsoft. Check your connection and try again."
+            case let .failed(domain, code):
+                // Naming the domain and code is not decoration: MSAL collapses
+                // most failures into MSALErrorInternal (-50000) with an empty
+                // description, so this is the only part of the message that
+                // distinguishes one from another in a bug report.
+                "Sign-in failed (\(domain) \(code)). About → Diagnostics has the log."
             }
+        }
+
+        /// Turns whatever MSAL threw into something a tester can report.
+        ///
+        /// Passing `localizedDescription` straight to the UI is what made a
+        /// genuine network drop and a broker failure look identical. A real
+        /// `NSURLErrorDomain` failure is the one case that can be named
+        /// outright; everything else at least carries its domain and code.
+        static func describing(_ error: Error) -> AuthError {
+            if let authError = error as? AuthError { return authError }
+
+            let error = error as NSError
+            DiagnosticsLog.shared.append(
+                "auth failure: \(error.domain) \(error.code) \(error.localizedDescription)"
+            )
+
+            if error.domain == NSURLErrorDomain { return .offline }
+            return .failed(domain: error.domain, code: error.code)
         }
     }
 
@@ -50,12 +77,28 @@ actor MSALTokenProvider: TokenProvider {
         MSALGlobalConfig.brokerAvailability = .none
         #endif
 
+        // Masking off is what makes a local failure explicable: without it every
+        // description logs as "Masked(not-null)", which is how two failures in
+        // a row went unexplained. It stays a debug-only setting — a release
+        // build reaches testers, and the log is now shareable from About →
+        // Diagnostics, so anything unmasked here would leave the device.
+        #if DEBUG
         MSALGlobalConfig.loggerConfig.logLevel = .verbose
-        // Without this every description logs as "Masked(not-null)", which is
-        // how two failures in a row went unexplained. Local development only.
         MSALGlobalConfig.loggerConfig.logMaskingLevel = .settingsMaskSecretsOnly
+        #else
+        MSALGlobalConfig.loggerConfig.logLevel = .info
+        MSALGlobalConfig.loggerConfig.logMaskingLevel = .settingsMaskAllPII
+        #endif
+
         MSALGlobalConfig.loggerConfig.setLogCallback { _, message, containsPII in
             guard let message else { return }
+            // Belt and braces: masking should already have cleared these in a
+            // release build, so a line still flagged as PII is one MSAL did not
+            // expect to mask. It is not worth shipping to a bug report.
+            #if !DEBUG
+            if containsPII { return }
+            #endif
+            DiagnosticsLog.shared.append(message)
             NSLog("MSALLOG %@", message)
         }
     }()
@@ -118,6 +161,8 @@ actor MSALTokenProvider: TokenProvider {
             }
         } catch let error as NSError where error.code == MSALError.interactionRequired.rawValue {
             return try await signIn()
+        } catch {
+            throw AuthError.describing(error)
         }
     }
 
@@ -162,7 +207,7 @@ actor MSALTokenProvider: TokenProvider {
                         error.code == MSALError.userCanceled.rawValue {
                     continuation.resume(throwing: AuthError.cancelled)
                 } else {
-                    continuation.resume(throwing: error ?? AuthError.interactionRequired)
+                    continuation.resume(throwing: AuthError.describing(error ?? AuthError.interactionRequired))
                 }
             }
         }
