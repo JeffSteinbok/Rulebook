@@ -155,13 +155,29 @@ struct ConditionEditor: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
             }
 
-            TextField("Value — e.g. accounts@", text: Binding(
-                get: { match.anyOf.first ?? "" },
-                set: { condition = condition.replacing(match: .init([$0], mode: match.mode)) }
-            ))
-            .textFieldStyle(RuleFieldStyle())
-            .textInputAutocapitalization(.never)
-            .autocorrectionDisabled()
+            ForEach(Array(displayedValues(for: match).indices), id: \.self) { index in
+                HStack(spacing: 8) {
+                    TextField("Value — e.g. accounts@", text: Binding(
+                        get: { displayedValues(for: match)[index] },
+                        set: { updateMatchValue($0, at: index, in: match) }
+                    ))
+                    .textFieldStyle(RuleFieldStyle())
+                    .textInputAutocapitalization(.never)
+                    .autocorrectionDisabled()
+
+                    if match.anyOf.count > 1 {
+                        Button {
+                            removeMatchValue(at: index, from: match)
+                        } label: {
+                            Image(systemName: "minus.circle.fill")
+                                .font(.system(size: 20))
+                                .foregroundStyle(DS.Palette.ink40)
+                        }
+                        .buttonStyle(.plain)
+                        .accessibilityLabel("Remove value")
+                    }
+                }
+            }
 
             if match.anyOf.count > 1 {
                 Text("Matches any of \(match.anyOf.count) values.")
@@ -187,6 +203,29 @@ struct ConditionEditor: View {
         .pickerStyle(.menu)
         .tint(DS.Palette.accent700)
         .frame(maxWidth: .infinity, alignment: .leading)
+    }
+
+    private func displayedValues(for match: StringMatch) -> [String] {
+        match.anyOf.isEmpty ? [""] : match.anyOf
+    }
+
+    private func updateMatchValue(_ value: String, at index: Int, in match: StringMatch) {
+        var values = displayedValues(for: match)
+        guard values.indices.contains(index) else { return }
+        if values.count > 1 && value.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+            values.remove(at: index)
+        } else {
+            values[index] = value
+        }
+        condition = condition.replacing(match: .init(values, mode: match.mode))
+    }
+
+    private func removeMatchValue(at index: Int, from match: StringMatch) {
+        var values = displayedValues(for: match)
+        guard values.indices.contains(index) else { return }
+        values.remove(at: index)
+        if values.isEmpty { values = [""] }
+        condition = condition.replacing(match: .init(values, mode: match.mode))
     }
 }
 
