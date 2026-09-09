@@ -13,6 +13,7 @@ struct AddAccountView: View {
 
     @Environment(\.dismiss) private var dismiss
     @State private var phase: Phase = .explainer
+    @State private var emailAddress = ""
     @State private var isAuthenticating = false
     @State private var connected: Account?
     @State private var ruleCount: Int?
@@ -56,10 +57,17 @@ struct AddAccountView: View {
             VStack(alignment: .leading, spacing: 12) {
                 Text("Connect your Outlook mailbox")
                     .font(DS.Font.sectionTitle)
-                Text("Microsoft handles the sign-in. Rulebook never sees your password — it receives a token you can revoke at any time.")
+                Text("Enter the email address for the mailbox you want to connect. Microsoft handles the sign-in after that. Rulebook never sees your password — it receives a token you can revoke at any time.")
                     .font(DS.Font.body)
                     .foregroundStyle(DS.Palette.ink60)
                     .fixedSize(horizontal: false, vertical: true)
+
+                TextField("name@example.com", text: $emailAddress)
+                    .textFieldStyle(RuleFieldStyle())
+                    .textInputAutocapitalization(.never)
+                    .autocorrectionDisabled()
+                    .keyboardType(.emailAddress)
+                    .textContentType(.emailAddress)
             }
             .padding(.bottom, 8)
             .listRowBackground(DS.Palette.ground)
@@ -146,8 +154,8 @@ struct AddAccountView: View {
         ) {
             Task { await proceed() }
         }
-        .disabled(isAuthenticating)
-        .opacity(isAuthenticating ? 0.6 : 1)
+        .disabled(isAuthenticating || (phase == .explainer && trimmedEmailAddress.isEmpty))
+        .opacity(isAuthenticating || (phase == .explainer && trimmedEmailAddress.isEmpty) ? 0.6 : 1)
         .padding(.horizontal, DS.Metric.gutter)
         .padding(.vertical, 14)
         .background(.bar)
@@ -155,6 +163,7 @@ struct AddAccountView: View {
 
     private func proceed() async {
         guard phase == .explainer else { dismiss(); return }
+        guard !trimmedEmailAddress.isEmpty else { return }
 
         isAuthenticating = true
         defer { isAuthenticating = false }
@@ -162,7 +171,7 @@ struct AddAccountView: View {
         do {
             // Presents ASWebAuthenticationSession. Everything inside is
             // Microsoft's — including Cancel, which throws .cancelled.
-            try await tokens.signIn()
+            try await tokens.signIn(loginHint: trimmedEmailAddress)
 
             guard let address = await tokens.signedInAddress else {
                 errorMessage = "Signed in, but no account came back."
@@ -191,6 +200,10 @@ struct AddAccountView: View {
 
     private var errorBinding: Binding<Bool> {
         Binding(get: { errorMessage != nil }, set: { if !$0 { errorMessage = nil } })
+    }
+
+    private var trimmedEmailAddress: String {
+        emailAddress.trimmingCharacters(in: .whitespacesAndNewlines)
     }
 }
 
