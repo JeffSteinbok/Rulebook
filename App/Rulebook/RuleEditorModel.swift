@@ -248,6 +248,7 @@ final class RuleEditorModel {
     }
 
     func back() -> Bool {
+        if isEditing { return true }
         guard let previous = Step(rawValue: step.rawValue - 1) else { return true }
         step = previous
         return false
