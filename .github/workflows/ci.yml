@@ -1,0 +1,58 @@
+name: CI
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+# A superseded run on the same pull request is wasted macOS minutes.
+# Pushes to main keep their runs, so every commit on main has a verdict.
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
+jobs:
+  build-and-test:
+    name: Build and test
+    runs-on: macos-15
+    timeout-minutes: 30
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v5
+
+      - name: Select latest stable Xcode
+        uses: maxim-lobanov/setup-xcode@v1
+        with:
+          xcode-version: latest-stable
+
+      # The hermetic suite only. RulebookLiveTests gates itself on
+      # RULEBOOK_LIVE, which is unset here, so its suites report as skipped
+      # rather than reaching for a real mailbox.
+      - name: Test RulebookKit
+        run: swift test
+
+      - name: Install XcodeGen
+        run: brew install xcodegen
+
+      # App/project.yml is the source of truth and no scheme is committed,
+      # so the project has to be generated before xcodebuild can see one.
+      - name: Generate Xcode project
+        working-directory: App
+        run: xcodegen generate
+
+      # A simulator destination and no signing: this proves the app compiles,
+      # which is all a pull request needs. Signing belongs to the TestFlight
+      # workflow, which is the only place the certificates exist.
+      - name: Build app
+        run: |
+          xcodebuild build \
+            -project App/Rulebook.xcodeproj \
+            -scheme Rulebook \
+            -configuration Debug \
+            -destination "generic/platform=iOS Simulator" \
+            CODE_SIGNING_ALLOWED=NO
