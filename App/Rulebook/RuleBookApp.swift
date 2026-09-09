@@ -3,6 +3,10 @@ import RulebookKit
 
 @main
 struct RulebookApp: App {
+    /// Only reason this exists: it installs the scene delegate that hands
+    /// Authenticator's callback URL back to MSAL. See MSALResponseHandling.
+    @UIApplicationDelegateAdaptor(AppDelegate.self) private var appDelegate
+
     @State private var accounts = AccountStore()
     @State private var pro = ProStore()
     @State private var tokens: MSALTokenProvider?

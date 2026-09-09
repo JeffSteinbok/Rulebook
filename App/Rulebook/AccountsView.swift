@@ -177,6 +177,18 @@ struct AboutView: View {
                 }
                 .listRowBackground(DS.Palette.ground)
                 .listRowInsets(.init(top: 0, leading: DS.Metric.gutter, bottom: 0, trailing: DS.Metric.gutter))
+
+                // NavigationLink with a destination view, not a value plus a
+                // `.navigationDestination`: the latter is invisible to the
+                // stack when declared inside a lazily built List, which is the
+                // same trap called out on the rules list.
+                NavigationLink {
+                    DiagnosticsView()
+                } label: {
+                    DetailRow(key: "Diagnostics", value: "Share a log")
+                }
+                .listRowBackground(DS.Palette.ground)
+                .listRowInsets(.init(top: 0, leading: DS.Metric.gutter, bottom: 0, trailing: DS.Metric.gutter))
             }
 
             Section {
