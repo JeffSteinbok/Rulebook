@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		24E1DC2B663B26DCEADA08AE /* Pro.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F351CF7D02AB0537ADBB689 /* Pro.swift */; };
+		300C63534C2CE456496BCC56 /* MSALResponseHandling.swift in Sources */ = {isa = PBXBuildFile; fileRef = 606746BB29C67F991A345DC7 /* MSALResponseHandling.swift */; };
 		30A90C395839A52FA869E359 /* RuleBookApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = D13E754716B70A913307162C /* RuleBookApp.swift */; };
 		36E13F777F772DD299E64A25 /* MSALTokenProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = D32210122649D35CB55AB2A6 /* MSALTokenProvider.swift */; };
 		38122D86E7D5516B34689AFF /* AccountStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 75EBFFCBB1851E430C038584 /* AccountStore.swift */; };
@@ -19,12 +20,14 @@
 		808DCAF6FF8A56864ACFCA0E /* RuleDiagnostics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97D94761282964ED07949781 /* RuleDiagnostics.swift */; };
 		8AB38089FE11B85E2C4742B7 /* RulesListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 04737A35D3A609B22837882E /* RulesListView.swift */; };
 		9B8CB2A8287D746593404219 /* ConditionEditor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33C9364D788CDBD25D78BEDF /* ConditionEditor.swift */; };
+		9D27D4519087BBE368FD1D95 /* DiagnosticsLog.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47A236F6AA44DFC56E4C77A1 /* DiagnosticsLog.swift */; };
 		A26A831271B0377830F17835 /* DesignTokens.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0837E43CDF9DF7B5648234F3 /* DesignTokens.swift */; };
 		A3BB8AFF44C7E104143F6A3F /* MSAL in Frameworks */ = {isa = PBXBuildFile; productRef = F405D37C0A53D316D4A68C01 /* MSAL */; };
 		A4F90554F0DE7C26F35CD1EA /* AccountsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = BAB651FE9D3FE83085EF2774 /* AccountsView.swift */; };
 		B031FBEA1ABA14A19AF230DA /* EmptyStates.swift in Sources */ = {isa = PBXBuildFile; fileRef = 15BC9E3FF4B49208354D0359 /* EmptyStates.swift */; };
 		D9AB0810DFF1697C5B24BF0E /* AddAccountView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 65D063BB8D7341C7338CD1AD /* AddAccountView.swift */; };
 		E049EE3E14953624AD28E21A /* RuleDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5C81C42C5360070006BEED62 /* RuleDetailView.swift */; };
+		E24E9D6ED452B02948209C0E /* DiagnosticsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7C614BBC669724CA455E11F0 /* DiagnosticsView.swift */; };
 		E54FBBC090BF8C95339CFCA1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = BCFFA801C6A0B88625247FBA /* Assets.xcassets */; };
 		F20287F8D951B6F3CC89DF59 /* RuleEditorModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0178A40B3C75479CB050555C /* RuleEditorModel.swift */; };
 /* End PBXBuildFile section */
@@ -37,10 +40,13 @@
 		15BC9E3FF4B49208354D0359 /* EmptyStates.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyStates.swift; sourceTree = "<group>"; };
 		2CA180A07CFA6F9A35D88299 /* PreviewSeed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PreviewSeed.swift; sourceTree = "<group>"; };
 		33C9364D788CDBD25D78BEDF /* ConditionEditor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ConditionEditor.swift; sourceTree = "<group>"; };
+		47A236F6AA44DFC56E4C77A1 /* DiagnosticsLog.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = DiagnosticsLog.swift; sourceTree = "<group>"; };
 		5C81C42C5360070006BEED62 /* RuleDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RuleDetailView.swift; sourceTree = "<group>"; };
 		5F351CF7D02AB0537ADBB689 /* Pro.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pro.swift; sourceTree = "<group>"; };
+		606746BB29C67F991A345DC7 /* MSALResponseHandling.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = MSALResponseHandling.swift; sourceTree = "<group>"; };
 		65D063BB8D7341C7338CD1AD /* AddAccountView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddAccountView.swift; sourceTree = "<group>"; };
 		75EBFFCBB1851E430C038584 /* AccountStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AccountStore.swift; sourceTree = "<group>"; };
+		7C614BBC669724CA455E11F0 /* DiagnosticsView.swift */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.swift; path = DiagnosticsView.swift; sourceTree = "<group>"; };
 		930B7A542CD59DD89DC4CA12 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		97D94761282964ED07949781 /* RuleDiagnostics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RuleDiagnostics.swift; sourceTree = "<group>"; };
 		A1F60C0A8E75EE9242771716 /* RuleEditorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RuleEditorView.swift; sourceTree = "<group>"; };
@@ -48,6 +54,7 @@
 		BCFFA801C6A0B88625247FBA /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		D13E754716B70A913307162C /* RuleBookApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RuleBookApp.swift; sourceTree = "<group>"; };
 		D32210122649D35CB55AB2A6 /* MSALTokenProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MSALTokenProvider.swift; sourceTree = "<group>"; };
+		DD3295D3215325A09DCFFB50 /* RulebookSimulator.entitlements */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.entitlements; path = RulebookSimulator.entitlements; sourceTree = "<group>"; };
 		DD4E1FE31C250BA2778D37DF /* RulesListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RulesListViewModel.swift; sourceTree = "<group>"; };
 		DF51557542604AA48BF04DCD /* Rulebook.app */ = {isa = PBXFileReference; includeInIndex = 0; lastKnownFileType = wrapper.application; path = Rulebook.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		E57B5E4CBFD00D987245C967 /* PaywallView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaywallView.swift; sourceTree = "<group>"; };
@@ -88,6 +95,10 @@
 				A1F60C0A8E75EE9242771716 /* RuleEditorView.swift */,
 				04737A35D3A609B22837882E /* RulesListView.swift */,
 				DD4E1FE31C250BA2778D37DF /* RulesListViewModel.swift */,
+				47A236F6AA44DFC56E4C77A1 /* DiagnosticsLog.swift */,
+				7C614BBC669724CA455E11F0 /* DiagnosticsView.swift */,
+				606746BB29C67F991A345DC7 /* MSALResponseHandling.swift */,
+				DD3295D3215325A09DCFFB50 /* RulebookSimulator.entitlements */,
 			);
 			path = Rulebook;
 			sourceTree = "<group>";
@@ -211,6 +222,9 @@
 				7AC53E14155FCC094E5E5863 /* RuleEditorView.swift in Sources */,
 				8AB38089FE11B85E2C4742B7 /* RulesListView.swift in Sources */,
 				6637068E2CCA89FBD6C41A25 /* RulesListViewModel.swift in Sources */,
+				9D27D4519087BBE368FD1D95 /* DiagnosticsLog.swift in Sources */,
+				E24E9D6ED452B02948209C0E /* DiagnosticsView.swift in Sources */,
+				300C63534C2CE456496BCC56 /* MSALResponseHandling.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -284,6 +298,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				"CODE_SIGN_ENTITLEMENTS[sdk=iphonesimulator*]" = Rulebook/RulebookSimulator.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				DEVELOPMENT_TEAM = Y7KVX7666P;
 				ENABLE_PREVIEWS = YES;
@@ -304,6 +319,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				"CODE_SIGN_ENTITLEMENTS[sdk=iphonesimulator*]" = Rulebook/RulebookSimulator.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				DEVELOPMENT_TEAM = Y7KVX7666P;
 				ENABLE_PREVIEWS = YES;

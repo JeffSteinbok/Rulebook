@@ -1,4 +1,5 @@
 import SwiftUI
+import UIKit
 import RulebookKit
 
 /// Mailboxes — the iOS selection-list pattern.
@@ -140,6 +141,8 @@ struct AccountsView: View {
 
 /// App info only. Mailbox facts live on the Mailboxes screen.
 struct AboutView: View {
+    private static let supportURL = URL(string: "https://rulebook.steinbok.net/support.html")!
+
     private var version: String {
         let short = Bundle.main.infoDictionary?["CFBundleShortVersionString"] as? String ?? "1.0"
         let build = Bundle.main.infoDictionary?["CFBundleVersion"] as? String ?? "1"
@@ -168,13 +171,18 @@ struct AboutView: View {
             }
 
             Section {
+                // Long-press to copy: a build stamp and a support URL are
+                // exactly what a bug report needs, and reading them off the
+                // screen by hand is where they get transcribed wrong.
                 DetailRow(key: "Version", value: version)
+                    .copyable(version, label: "Copy version")
                     .listRowBackground(DS.Palette.ground)
                     .listRowInsets(.init(top: 0, leading: DS.Metric.gutter, bottom: 0, trailing: DS.Metric.gutter))
 
-                Link(destination: URL(string: "https://rulebook.steinbok.net/support.html")!) {
+                Link(destination: Self.supportURL) {
                     DetailRow(key: "Support", value: "rulebook.steinbok.net")
                 }
+                .copyable(Self.supportURL.absoluteString, label: "Copy link")
                 .listRowBackground(DS.Palette.ground)
                 .listRowInsets(.init(top: 0, leading: DS.Metric.gutter, bottom: 0, trailing: DS.Metric.gutter))
 
@@ -218,4 +226,24 @@ struct AboutView: View {
 
 #Preview("About") {
     NavigationStack { AboutView() }
+}
+
+
+// MARK: - Copy affordance
+
+private extension View {
+    /// Long-press to copy the row's value.
+    ///
+    /// `.textSelection` is the obvious reach here and the wrong one: inside a
+    /// `List` row it swallows the row's own tap, which would cost the Support
+    /// row its link. A context menu leaves the tap alone.
+    func copyable(_ value: String, label: String) -> some View {
+        contextMenu {
+            Button {
+                UIPasteboard.general.string = value
+            } label: {
+                Label(label, systemImage: "doc.on.doc")
+            }
+        }
+    }
 }

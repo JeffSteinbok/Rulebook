@@ -4,16 +4,15 @@ import RulebookKit
 /// Add a mailbox: an explainer, then Microsoft's own sign-in, then a summary.
 ///
 /// Two app screens with a system-owned one between them. Microsoft handles the
-/// password, MFA, conditional access and the consent grant — this view collects
-/// only the mailbox email address, and there is no provider step while Outlook
-/// is the only live option.
+/// address, password, MFA, conditional access and the consent grant — this view
+/// collects nothing itself, and there is no provider step while Outlook is the
+/// only live option.
 struct AddAccountView: View {
     let tokens: MSALTokenProvider
     let accounts: AccountStore
 
     @Environment(\.dismiss) private var dismiss
     @State private var phase: Phase = .explainer
-    @State private var emailAddress = ""
     @State private var isAuthenticating = false
     @State private var connected: Account?
     @State private var ruleCount: Int?
@@ -57,17 +56,10 @@ struct AddAccountView: View {
             VStack(alignment: .leading, spacing: 12) {
                 Text("Connect your Outlook mailbox")
                     .font(DS.Font.sectionTitle)
-                Text("Enter the email address for the mailbox you want to connect. Microsoft handles the sign-in after that. Rulebook never sees your password — it receives a token you can revoke at any time.")
+                Text("Microsoft runs the whole sign-in — you'll enter the mailbox address and password on their page. Rulebook never sees your password; it receives a token you can revoke at any time.")
                     .font(DS.Font.body)
                     .foregroundStyle(DS.Palette.ink60)
                     .fixedSize(horizontal: false, vertical: true)
-
-                TextField("name@example.com", text: $emailAddress)
-                    .textFieldStyle(RuleFieldStyle())
-                    .textInputAutocapitalization(.never)
-                    .autocorrectionDisabled()
-                    .keyboardType(.emailAddress)
-                    .textContentType(.emailAddress)
             }
             .padding(.bottom, 8)
             .listRowBackground(DS.Palette.ground)
@@ -154,8 +146,8 @@ struct AddAccountView: View {
         ) {
             Task { await proceed() }
         }
-        .disabled(isAuthenticating || (phase == .explainer && trimmedEmailAddress.isEmpty))
-        .opacity(isAuthenticating || (phase == .explainer && trimmedEmailAddress.isEmpty) ? 0.6 : 1)
+        .disabled(isAuthenticating)
+        .opacity(isAuthenticating ? 0.6 : 1)
         .padding(.horizontal, DS.Metric.gutter)
         .padding(.vertical, 14)
         .background(.bar)
@@ -163,15 +155,15 @@ struct AddAccountView: View {
 
     private func proceed() async {
         guard phase == .explainer else { dismiss(); return }
-        guard !trimmedEmailAddress.isEmpty else { return }
 
         isAuthenticating = true
         defer { isAuthenticating = false }
 
         do {
             // Presents ASWebAuthenticationSession. Everything inside is
-            // Microsoft's — including Cancel, which throws .cancelled.
-            try await tokens.signIn(loginHint: trimmedEmailAddress)
+            // Microsoft's — the address prompt included, and Cancel, which
+            // throws .cancelled. The address comes back on the account.
+            try await tokens.signIn()
 
             guard let address = await tokens.signedInAddress else {
                 errorMessage = "Signed in, but no account came back."
@@ -200,10 +192,6 @@ struct AddAccountView: View {
 
     private var errorBinding: Binding<Bool> {
         Binding(get: { errorMessage != nil }, set: { if !$0 { errorMessage = nil } })
-    }
-
-    private var trimmedEmailAddress: String {
-        emailAddress.trimmingCharacters(in: .whitespacesAndNewlines)
     }
 }
 
@@ -298,12 +286,24 @@ private struct GateButtonStyle: ButtonStyle {
         .frame(minHeight: filled ? 56 : 48)
         .background {
             if filled {
-                RoundedRectangle(cornerRadius: DS.Metric.controlRadius).fill(.white)
-            } else {
                 RoundedRectangle(cornerRadius: DS.Metric.controlRadius)
-                    .strokeBorder(.white.opacity(0.6), lineWidth: 1)
+                    .fill(.white.opacity(configuration.isPressed ? 0.72 : 1))
+            } else {
+                // The outlined variant is white-on-accent, where the old
+                // blanket 0.85 opacity dip was invisible — "About Rulebook"
+                // read as a dead control. It needs a fill to react at all.
+                RoundedRectangle(cornerRadius: DS.Metric.controlRadius)
+                    .fill(.white.opacity(configuration.isPressed ? 0.25 : 0))
+                    .overlay {
+                        RoundedRectangle(cornerRadius: DS.Metric.controlRadius)
+                            .strokeBorder(.white.opacity(0.6), lineWidth: 1)
+                    }
             }
         }
-        .opacity(configuration.isPressed ? 0.85 : 1)
+        // The outlined button's interior is transparent; without this only the
+        // label and border are tappable, not the box.
+        .contentShape(RoundedRectangle(cornerRadius: DS.Metric.controlRadius))
+        .scaleEffect(configuration.isPressed ? 0.98 : 1)
+        .animation(.easeOut(duration: 0.12), value: configuration.isPressed)
     }
 }

@@ -188,7 +188,7 @@ actor MSALTokenProvider: TokenProvider {
     }
 
     @discardableResult
-    func signIn(loginHint: String? = nil) async throws -> String {
+    func signIn() async throws -> String {
         guard let anchor = await presentationAnchor() else { throw AuthError.cancelled }
 
         let webParams = MSALWebviewParameters(authPresentationViewController: anchor)
@@ -197,8 +197,9 @@ actor MSALTokenProvider: TokenProvider {
         webParams.webviewType = .default
 
         let params = MSALInteractiveTokenParameters(scopes: scopes, webviewParameters: webParams)
+        // No loginHint: .selectAccount makes Microsoft's own page ask which
+        // mailbox, so the app never has to collect an address up front.
         params.promptType = .selectAccount
-        params.loginHint = loginHint
 
         let result: MSALResult = try await withCheckedThrowingContinuation { continuation in
             application.acquireToken(with: params) { result, error in
