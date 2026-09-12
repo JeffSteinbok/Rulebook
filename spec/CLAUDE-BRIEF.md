@@ -54,7 +54,7 @@ library, you are solving the problem in the wrong place.
 **Screens bind to `ProviderProfile` and `RuleStore`, never to a concrete
 provider.** `profile.availableConditions` / `availableActions` already filter to
 what the provider supports; `profile.vocabulary` labels them. Never hard-code a
-list of condition fields or actions — that is what makes the Gmail store a
+list of condition fields or actions — that is what makes a second store a
 drop-in later.
 
 **`MatchMode` has no negation.** There is no "does not contain", no "is not".
@@ -150,8 +150,8 @@ one that was never offered.
 `RuleEditorModel.revalidate()` detects this and reports a blocking issue. That
 is a workaround — see gap 4 below.
 
-**Size is bytes in the model, MB in the UI.** Graph is kilobytes, Gmail is
-bytes, the neutral model is bytes. `SizeEditor` converts.
+**Size is bytes in the model, MB in the UI.** Graph is kilobytes; the neutral
+model is bytes. `SizeEditor` converts.
 
 ## Error and empty states are part of the design, not an afterthought
 

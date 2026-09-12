@@ -11,11 +11,12 @@ public struct MailAddress: Codable, Hashable, Sendable {
     }
 }
 
-/// A destination for a message: an Outlook folder, a Gmail label.
+/// A destination for a message: an Outlook folder, or whatever a later
+/// provider files mail into.
 ///
-/// Providers identify these differently — Graph uses opaque folder ids, Gmail
-/// uses label ids with well-known constants like `INBOX`. Either an `id` or a
-/// `name` is enough; a mapper resolves whichever it needs.
+/// Providers identify these differently — Graph uses opaque folder ids, others
+/// use names or well-known constants. Either an `id` or a `name` is enough; a
+/// mapper resolves whichever it needs.
 public struct MailboxFolder: Codable, Hashable, Sendable {
     public var id: String?
     public var name: String?
@@ -57,8 +58,8 @@ public struct StringMatch: Codable, Hashable, Sendable {
 
 /// Message size bounds, in **bytes**.
 ///
-/// Providers disagree on units — Graph's `withinSizeRange` is kilobytes,
-/// Gmail's filter size is bytes. Bytes is the neutral unit; mappers convert.
+/// Providers disagree on units — Graph's `withinSizeRange` is kilobytes, for
+/// one. Bytes is the neutral unit; mappers convert.
 public struct SizeConstraint: Codable, Hashable, Sendable {
     public var minimumBytes: Int?
     public var maximumBytes: Int?

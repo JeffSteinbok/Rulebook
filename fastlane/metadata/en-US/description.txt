@@ -51,10 +51,5 @@ says so plainly rather than leaving you to find out at the consent screen.
 Message bodies are never requested at all. There is no analytics SDK, no
 tracking, and no advertising.
 
-WHAT'S NEXT
-
-Gmail support is in progress. Rulebook's rule model was built provider-neutral
-from the first commit for exactly this reason.
-
 Requires a Microsoft 365, Office 365, or Outlook.com account. Not affiliated
 with Microsoft.

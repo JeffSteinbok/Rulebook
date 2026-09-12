@@ -80,7 +80,7 @@ struct AddAccountView: View {
                 .listRowInsets(.init(top: 0, leading: DS.Metric.gutter, bottom: 0, trailing: DS.Metric.gutter))
             }
 
-            Text("You'll approve these on Microsoft's own consent screen in the next step. Gmail and Workspace aren't supported yet.")
+            Text("You'll approve these on Microsoft's own consent screen in the next step.")
                 .font(DS.Font.caption)
                 .foregroundStyle(DS.Palette.ink60)
                 .padding(.vertical, 16)

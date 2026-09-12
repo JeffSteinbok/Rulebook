@@ -2,7 +2,6 @@ import Foundation
 
 public enum ProviderID: String, Codable, Hashable, Sendable, CaseIterable {
     case microsoft
-    case google
     /// The local JSON/in-memory stores, which impose no provider limits.
     case local
 }
@@ -26,8 +25,8 @@ public struct MailRule: Codable, Hashable, Sendable, Identifiable {
 
     public var name: String
 
-    /// Evaluation order, lowest first. `nil` where the provider has no ordering
-    /// (Gmail applies every matching filter).
+    /// Evaluation order, lowest first. `nil` where the provider has no
+    /// ordering and simply applies every rule that matches.
     public var order: Int?
 
     public var isEnabled: Bool

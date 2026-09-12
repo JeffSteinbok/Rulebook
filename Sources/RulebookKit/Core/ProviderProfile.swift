@@ -4,8 +4,8 @@ import Foundation
 ///
 /// The neutral model is what the app stores and reasons about; a vocabulary is
 /// what it *says*. Outlook calls it a rule that moves mail to a folder and
-/// assigns a category; Gmail calls it a filter that applies a label and skips
-/// the Inbox. Same `MailRule`, different sentences.
+/// assigns a category; another provider may call the same thing a filter that
+/// applies a label. Same `MailRule`, different sentences.
 public protocol ProviderVocabulary: Sendable {
     /// Field name only — for a form label or a table header.
     func name(for kind: ConditionKind) -> String
@@ -20,14 +20,14 @@ public protocol ProviderVocabulary: Sendable {
 /// what it can do (``capabilities``) and what it calls things (``vocabulary``).
 public struct ProviderProfile: Sendable {
     public let id: ProviderID
-    /// The product name a person would recognise: "Outlook", "Gmail".
+    /// The product name a person would recognise, e.g. "Outlook".
     public let displayName: String
-    /// What this provider calls a rule — Outlook "rule", Gmail "filter".
+    /// What this provider calls a rule — Outlook says "rule".
     public let ruleNoun: String
     public let ruleNounPlural: String
-    /// Where mail gets filed: Outlook "folder", Gmail "label".
+    /// Where mail gets filed — Outlook says "folder".
     public let folderNoun: String
-    /// What a tag is called: Outlook "category", Gmail "label".
+    /// What a tag is called — Outlook says "category".
     public let tagNoun: String
     public let capabilities: RuleCapabilities
     public let vocabulary: any ProviderVocabulary
@@ -111,17 +111,6 @@ public enum ProviderCatalog {
         vocabulary: OutlookVocabulary()
     )
 
-    public static let gmail = ProviderProfile(
-        id: .google,
-        displayName: "Gmail",
-        ruleNoun: "filter",
-        ruleNounPlural: "filters",
-        folderNoun: "label",
-        tagNoun: "label",
-        capabilities: GmailRuleMapper.capabilities,
-        vocabulary: GmailVocabulary()
-    )
-
     /// The local stores: no provider limits, neutral wording.
     public static let local = ProviderProfile(
         id: .local,
@@ -134,12 +123,11 @@ public enum ProviderCatalog {
         vocabulary: NeutralVocabulary()
     )
 
-    public static let all: [ProviderProfile] = [outlook, gmail, local]
+    public static let all: [ProviderProfile] = [outlook, local]
 
     public static func profile(for id: ProviderID) -> ProviderProfile {
         switch id {
         case .microsoft: outlook
-        case .google: gmail
         case .local: local
         }
     }
@@ -148,7 +136,6 @@ public enum ProviderCatalog {
     public static func profile(named name: String) -> ProviderProfile? {
         switch name.lowercased() {
         case "outlook", "microsoft", "m365", "office365", "graph", "exchange": outlook
-        case "gmail", "google": gmail
         case "local", "offline", "none": local
         default: nil
         }

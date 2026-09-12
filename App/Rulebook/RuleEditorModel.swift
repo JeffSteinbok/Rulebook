@@ -6,8 +6,8 @@ import RulebookKit
 ///
 /// Holds a `MailRule` under construction plus the provider profile that
 /// constrains it. Every picker is filled from `profile.availableConditions` /
-/// `availableActions` — never a hard-coded list, which is what lets the Gmail
-/// store drop in later.
+/// `availableActions` — never a hard-coded list, so a rule can only be built
+/// from what the connected provider actually supports.
 @MainActor
 @Observable
 final class RuleEditorModel {

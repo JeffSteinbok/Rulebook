@@ -23,7 +23,7 @@ public enum RuleAction: Hashable, Sendable {
     case moveTo(MailboxFolder)
     /// Leave in place and put a copy in `folder`.
     case copyTo(MailboxFolder)
-    /// Tag the message without moving it. A Gmail label; an Outlook category.
+    /// Tag the message without moving it. An Outlook category, for instance.
     case addLabel(MailboxFolder)
     case removeLabel(MailboxFolder)
     case markAsRead(Bool)

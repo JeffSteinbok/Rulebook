@@ -9,7 +9,7 @@ struct RulebookCLI: AsyncParsableCommand {
         abstract: "Inspect, validate, and edit mail rules across providers.",
         discussion: """
             Rules are held in a provider-neutral model. Each provider — Outlook
-            (Microsoft 365) and Gmail — has a mapper that translates to its own
+            (Microsoft 365) today — has a mapper that translates to its own
             format and declares what it can express, so an unsupported rule is
             reported here rather than rejected by the server.
             """,
@@ -29,7 +29,7 @@ struct RulebookCLI: AsyncParsableCommand {
 struct ProviderOption: ParsableArguments {
     @Option(
         name: .shortAndLong,
-        help: "outlook (aka microsoft, m365), gmail (aka google), or local."
+        help: "outlook (aka microsoft, m365), or local."
     )
     var provider: String?
 
@@ -97,15 +97,6 @@ struct StoreOptions: ParsableArguments {
             return GraphRuleStore(
                 tokenProvider: try tokenProvider(),
                 resolveFolderNames: !rawFolderIDs
-            )
-        case .google:
-            throw ValidationError(
-                """
-                Gmail's live client is not implemented yet — only its mapper and
-                capabilities are. Use --offline <file> to work against a local
-                file with Gmail's limits applied, or `rulebook translate` to see
-                the filter a rule becomes.
-                """
             )
         case .local:
             throw ValidationError("The local provider needs --offline <file>.")
@@ -394,8 +385,6 @@ extension RulebookCLI {
                     switch profile.id {
                     case .microsoft:
                         print(try Format.json(try GraphRuleMapper().encode(rule)))
-                    case .google:
-                        print(try Format.json(try GmailRuleMapper().encode(rule)))
                     case .local:
                         print(try Format.json(rule))
                     }
