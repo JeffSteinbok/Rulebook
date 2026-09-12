@@ -2,7 +2,7 @@ import Foundation
 
 /// CRUD over one mailbox's rules, in the neutral model.
 ///
-/// Every backend conforms: Microsoft 365, Gmail (once its client lands), and
+/// Every backend conforms: Microsoft 365 today, any provider added later, and
 /// the local JSON/in-memory stores. Call sites — the iOS app, the CLI — only
 /// ever see ``MailRule``.
 public protocol RuleStore: Sendable {

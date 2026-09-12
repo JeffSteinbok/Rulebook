@@ -3,7 +3,7 @@ import Foundation
 /// Resolves between a provider's opaque folder identifiers and names people
 /// recognise.
 ///
-/// Rules reference destinations by id — Graph folder ids, Gmail label ids —
+/// Rules reference destinations by provider ids — Graph folder ids, say —
 /// which are unreadable and useless in a UI. A directory turns
 /// `AQMkADAwATMwMAItODAxNy1jMTVm…` into `Inbox/Reading`, and a name typed by a
 /// person back into the id a write needs.

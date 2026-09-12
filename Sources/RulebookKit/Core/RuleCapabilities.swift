@@ -3,8 +3,8 @@ import Foundation
 /// What one provider's rule engine can actually express.
 ///
 /// Every mapper publishes one of these. ``RuleCompatibility`` checks a neutral
-/// rule against it *before* any network call, so "Gmail cannot do that" is a
-/// local, explainable answer rather than an opaque 400.
+/// rule against it *before* any network call, so "this provider cannot do
+/// that" is a local, explainable answer rather than an opaque 400.
 public struct RuleCapabilities: Hashable, Sendable {
     public var provider: ProviderID
     public var conditions: Set<ConditionKind>

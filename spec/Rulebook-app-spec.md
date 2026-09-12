@@ -178,8 +178,8 @@ actions and jump to step 2.
 `match`. Each condition row: field picker, operator picker, value.
 
 - Field picker = `profile.availableConditions`, labelled
-  `profile.vocabulary.name(for:)`. Do not hard-code a field list — Gmail's
-  differs and the profile already knows.
+  `profile.vocabulary.name(for:)`. Do not hard-code a field list — providers
+  differ and the profile already knows.
 - Operator picker = `MatchMode` — `contains`, `equals`, `startsWith`,
   `endsWith`. **There is no negation.**
 - **UNLESS** subsection below, with the explanatory line: "Outlook has no

@@ -50,9 +50,9 @@ struct InMemoryStoreTests {
 
     @Test("A store can carry a provider's capabilities")
     func storeCarriesCapabilities() {
-        let store = InMemoryRuleStore(capabilities: GmailRuleMapper.capabilities)
-        #expect(store.capabilities.provider == .google)
-        #expect(!store.capabilities.supportsOrdering)
+        let store = InMemoryRuleStore(capabilities: GraphRuleMapper.capabilities)
+        #expect(store.capabilities.provider == .microsoft)
+        #expect(store.capabilities.supportsOrdering)
     }
 }
 

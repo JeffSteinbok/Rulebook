@@ -1,7 +1,7 @@
 # RuleBook
 
 An iOS app for managing mail rules — the filters that file, forward, flag, and
-delete your mail before you ever see it. Microsoft 365 today, Gmail next.
+delete your mail before you ever see it. Microsoft 365 and Outlook.com.
 
 The app is not built yet. What exists is the engine it will run on: a
 provider-neutral rules model, a Microsoft 365 implementation that works
@@ -15,7 +15,6 @@ Sources/
   RulebookKit/             The library the iOS app links
     Core/                    Neutral model — MailRule, conditions, actions
     Providers/Microsoft/     Graph wire types, mapper, store, auth
-    Providers/Google/        Gmail wire types and mapper
     Stores/                  In-memory and JSON-file stores
   rulebook/                CLI harness
 Tests/
@@ -44,25 +43,26 @@ provider supports one, so a tree would be a model that could never be mapped.
 
 **Capabilities.** Each provider publishes a `RuleCapabilities` saying what it
 can express, and `RuleCompatibility.check(_:against:)` runs that locally. So
-"Gmail can't do that" is an explainable answer before any network call. The
+"this provider can't do that" is an explainable answer before any network
+call. The
 check is a pre-flight; **the mapper is the authority** — where a capability
 holds only in some cases (Outlook matches an exact address but not an exact
 subject) `encode` reports the specific case.
 
 Lossy mappings are refused, never silently dropped. A rule that stops
-processing is usually shielding a message from a later, destructive rule; Gmail
-runs every matching filter, so quietly dropping the action would lose mail. The
-refusal names the portable alternative instead.
+processing is usually shielding a message from a later, destructive rule, so on
+a provider that runs every matching rule regardless, quietly dropping the action
+would lose mail. The refusal names the portable alternative instead.
 
 **Vocabulary.** The model is what the app stores; a `ProviderVocabulary` is
-what it *says*. One `MailRule`, two products:
+what it *says*, in the words that provider's own UI uses:
 
 ```
-Outlook                              Gmail
-Rule: Newsletters to Reading         Filter: Newsletters to Reading
-  - Subject includes ‘weekly’          - Subject: weekly
-  - Move to ‘Reading’                  - Apply the label ‘Reading’, and skip the Inbox
-  - Message size at least 5120 KB      - Size greater than 5 MB
+Outlook
+Rule: Newsletters to Reading
+  - Subject includes ‘weekly’
+  - Move to ‘Reading’
+  - Message size at least 5120 KB
 ```
 
 `ProviderProfile` bundles the two — `capabilities` to constrain a form,
@@ -91,15 +91,15 @@ Everything below runs with no account at all:
 
 ```sh
 swift run rulebook providers                           # capability matrix
-swift run rulebook describe -f rules.json -p gmail     # in Gmail's wording
+swift run rulebook describe -f rules.json -p outlook   # in Outlook's wording
 swift run rulebook translate -f rules.json -p outlook  # the native payload
-swift run rulebook validate  -f rules.json -p gmail    # what won't port
+swift run rulebook validate  -f rules.json -p outlook  # what won't map
 ```
 
 `--offline <file.json>` points every subcommand at `JSONFileRuleStore` instead
 of a live account — same protocol, same validation, writes persisted back.
-Naming a provider alongside it makes the file behave like that provider, so a
-Gmail-capability file refuses what Gmail refuses with no Google account.
+Naming a provider alongside it makes the file behave like that provider, so the
+file refuses exactly what that provider refuses, with no account and no network.
 
 ```sh
 cp Tests/RulebookKitTests/Fixtures/neutral-rules.json /tmp/mailbox.json
@@ -171,18 +171,6 @@ never excludes a message the original included.
 `hasError` is not a reliable signal — a rule can point at a deleted folder and
 still be reported healthy, silently dropping mail. Validating folder references
 independently catches what Outlook misses.
-
-**Gmail.** Filters have no name, no order, and cannot be disabled; a readable
-name is inferred from what the filter does. Nearly every effect is a label
-change — archive is *remove INBOX*, star is *add STARRED*, delete is *add
-TRASH* — and `moveTo` is apply-a-label-and-remove-INBOX, which the decoder
-folds back into a single `moveTo`. Conditions with no typed criteria field are
-rendered into search syntax; exceptions become `negatedQuery`. There is no
-PATCH: an update is a delete plus a create.
-
-**Not built yet.** The Gmail HTTP client and its OAuth flow. The mapper and
-capabilities are complete and tested, so adding the client is a `RuleStore`
-conformance over `users.settings.filters`, shaped like `GraphRuleStore`.
 
 ## Tests
 

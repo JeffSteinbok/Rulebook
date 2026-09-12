@@ -32,7 +32,7 @@ struct NeutralModelTests {
         .addressed(.onlyToMe),
         .messageKind(.meetingRequest, false),
         .actionFlag(.followUp),
-        .rawQuery(provider: .google, query: "larger:5M"),
+        .rawQuery(provider: .microsoft, query: "size>5MB"),
     ])
     func conditionsRoundTrip(condition: RuleCondition) throws {
         #expect(try jsonRoundTrip(condition) == condition)

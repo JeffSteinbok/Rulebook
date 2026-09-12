@@ -232,7 +232,7 @@ struct ConditionEditor: View {
 // MARK: - Size
 
 /// Bytes in the model, megabytes in the UI. The neutral model is bytes because
-/// providers disagree — Graph is kilobytes, Gmail is bytes.
+/// providers disagree on the unit — Graph, for one, is kilobytes.
 private struct SizeEditor: View {
     let constraint: SizeConstraint
     let onChange: (SizeConstraint) -> Void

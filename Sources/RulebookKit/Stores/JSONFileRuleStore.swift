@@ -7,8 +7,8 @@ import Foundation
 /// would against a real mailbox. This is what `rulebook --offline` uses.
 ///
 /// Pass `capabilities` to make the file behave like one provider: a store
-/// created with Gmail's capabilities refuses what Gmail refuses, without a
-/// Google account.
+/// created with a provider's capabilities refuses exactly what that provider
+/// refuses, with no account and no network.
 public actor JSONFileRuleStore: RuleStore {
     public nonisolated let capabilities: RuleCapabilities
 
